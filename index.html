@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>TTA | Strategic Command Terminal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; background: #050505; color: #eee; font-family: 'Roboto', sans-serif; overflow: hidden; }
+        
+        /* GİRİŞ EKRANI */
+        #login-screen { height: 100vh; display: flex; align-items: center; justify-content: center; background: #000; position: fixed; width: 100%; z-index: 999; }
+        .login-card { background: #0a0a0a; padding: 40px; border: 1px solid #1a1a1a; text-align: center; width: 350px; border-top: 4px solid #900; }
+        input { width: 100%; padding: 12px; margin: 20px 0; background: #000; border: 1px solid #333; color: #fff; text-align: center; box-sizing: border-box; outline: none; }
+        .btn-entry { width: 100%; padding: 12px; background: #900; color: #fff; border: none; cursor: pointer; font-family: 'Oswald'; font-weight: bold; letter-spacing: 2px; }
+
+        /* ANA PANEL */
+        #main-app { display: none; height: 100vh; display: flex; flex-direction: column; }
+        .header { background: #000; padding: 15px 40px; border-bottom: 2px solid #900; display: flex; justify-content: space-between; align-items: center; }
+        .nav { display: flex; background: #0f0f0f; border-bottom: 1px solid #222; overflow-x: auto; }
+        .nav-btn { padding: 15px 25px; cursor: pointer; font-family: 'Oswald'; color: #555; transition: 0.3s; white-space: nowrap; border-right: 1px solid #1a1a1a; }
+        .nav-btn:hover { color: #fff; background: #151515; }
+        .nav-btn.active { background: #900; color: #fff; }
+
+        .content { flex: 1; padding: 30px; background: #080808; overflow-y: auto; }
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.3s ease; }
+        
+        .card { background: #0f0f0f; padding: 25px; border: 1px solid #1a1a1a; border-left: 5px solid #900; margin-bottom: 20px; }
+        .title { color: #900; font-family: 'Oswald'; font-size: 1.4rem; margin-bottom: 15px; text-transform: uppercase; border-bottom: 1px solid #222; padding-bottom: 5px; }
+
+        /* KURALLAR ÖZEL STİL */
+        .rule-sub { color: #900; font-family: 'Oswald'; margin-top: 15px; font-size: 1.1rem; }
+        .rule-list { list-style: none; padding-left: 0; }
+        .rule-list li { margin-bottom: 8px; padding-left: 15px; border-left: 1px solid #333; font-size: 0.9rem; line-height: 1.4; }
+
+        /* TABLO TASARIMI */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { text-align: left; color: #900; font-family: 'Oswald'; padding: 10px; border-bottom: 2px solid #900; font-size: 0.9rem; }
+        td { padding: 10px; border-bottom: 1px solid #111; color: #ccc; font-size: 0.85rem; }
+        tr:hover { background: #111; }
+
+        /* FOOTER */
+        .footer { position: fixed; bottom: 20px; right: 35px; text-align: right; pointer-events: none; }
+        #rank-tag { font-family: 'Oswald'; font-size: 1.2rem; color: #900; text-transform: uppercase; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <div class="login-card">
+            <h2 style="font-family: 'Oswald'; color: #fff; margin:0;">TTA TURKISH TRAINING ARMY</h2>
+            <p style="color:#444; font-family:'Oswald'; font-size:0.8rem;">STRATEJİK KOMUTA MERKEZİ</p>
+            <input type="text" id="rInput" placeholder="RÜTBENİZİ GİRİN">
+            <button class="btn-entry" onclick="start()">BAĞLAN</button>
+        </div>
+    </div>
+
+    <div id="main-app">
+        <div class="header">
+            <div style="font-family:'Oswald'; font-size:1.6rem; letter-spacing:3px;">TTA | COMMAND INTERFACE</div>
+            <div id="clock" style="font-family:'Oswald'; color:#444;">00:00:00</div>
+        </div>
+
+        <div class="nav">
+            <div class="nav-btn active" onclick="tab(0)">ANA TERMİNAL</div>
+            <div class="nav-btn" onclick="tab(1)">ATA SÖZLERİ</div>
+            <div class="nav-btn" onclick="tab(2)">ZORUNLU KURALLAR</div>
+            <div class="nav-btn" onclick="tab(3)">LİNKLERİMİZ</div>
+            <div class="nav-btn" onclick="tab(4)">MARKET</div>
+            <div class="nav-btn" onclick="tab(5)">YETKİLİLER</div>
+            <div class="nav-btn" onclick="tab(6)" style="color:#ff0000;">KARA LİSTE</div>
+        </div>
+
+        <div class="content">
+            <div class="page active" id="p0">
+                <div class="card">
+                    <div class="title">SİSTEM DURUMU</div>
+                    <p><b>KAMP:</b> Turkish Training Army</p>
+                    <p><b>DURUM:</b> <span style="color: #0f0;">OYUN AÇIK (ÇEVRİMİÇİ)</span></p>
+                    <p><b>BÖLGE:</b> Roblox</p>
+                    <p><b>KURUCULAR:</b> Waset & Tufan</p>
+                </div>
+            </div>
+
+            <div class="page" id="p1">
+                <div class="card">
+                    <div class="title">ATA SÖZLERİ</div>
+                    <p><i>"Muhtaç olduğun kudret, damarlarındaki asil kanda mevcuttur!"</i></p>
+                    <p><i>"Vatanını en çok seven, görevini en iyi yapandır."</i></p>
+                    <p><i>"Türk askeri eğilmez, Türk devleti yenilmez."</i></p>
+                </div>
+            </div>
+
+            <div class="page" id="p2">
+                <div class="card">
+                    <div class="title">TTA ZORUNLU KURALLARI</div>
+                    
+                    <div class="rule-sub">TTA Discord Kuralları</div>
+                    <ul class="rule-list">
+                        <li>Sunucu üzerinde tiksindirici, rahatsız edici ve alakasız mesajlar atmak yasaktır!</li>
+                        <li>Sohbet kanallarında mesaj spamlamak yasaktır!</li>
+                        <li>Toplanarak sunucu üzerinde aynı mesajın spamını yapmak ve sunucu içerisinde gruplaşmak yasaktır!</li>
+                        <li>Kanallar ve DM üzerinden üst yetkililere gereksiz yere TAG atmak yasaktır. Üst Yetkililere ulaşmanız gerekiyor ise destek sistemi üzerinden ulaşınız!</li>
+                    </ul>
+
+                    <div class="rule-sub">TTA Oyun İçi Kuralları</div>
+                    <ul class="rule-list">
+                        <li>1. Üst rütbelilere hitap ZORUNLUDUR. OF-1 - OF-5: "Komutanım", OF-6+: "Paşam".</li>
+                        <li>2. Laubalilik yasaktır. Oyun içerisinde rütbeye saygı mecburidir.</li>
+                        <li>3. Discord üzerinde hiçbir üst rütbe sizden üstte, hiçbir alt rütbe sizden altta değildir (Sadece Discord için geçerlidir).</li>
+                        <li>4. Emir almamazlık ve itaatsizlik kesinlikle yasaktır!</li>
+                        <li>5. Rütbe istemek (rica dahi olsa) yasaktır.</li>
+                        <li>6. Troll direkt BAN sebebidir.</li>
+                        <li>7. Prime saatler içerisinde asla cıvıklık yapılamaz, üniformanın hakkı verilmelidir!</li>
+                        <li>8. Rastgele ateş etmek ve infaz yasaktır!</li>
+                        <li>9. Güç zehirlenmesi ve alt rütbelere saçma emirler (havla, miyavla vb.) vermek kesinlikle yasaktır.</li>
+                        <li>10. Küfür ve hakaret yasaktır. Ceza seviyesini yetkili belirler.</li>
+                        <li>11. Sorunlarda önce bir üst rütbeye danışınız, çözülmezse Discord destek sistemini kullanınız.</li>
+                        <li>12. Reklam yapmak BAN sebebidir.</li>
+                        <li>13. Gruplaşmak, örgütleşmek yasaktır!</li>
+                        <li>14. Sunucu açıklarını kullanmak yasaktır. Gerekirse BAN!</li>
+                        <li>15. Nöbetteyken gerekli personele soru sorulması esastır.</li>
+                        <li>16. Üniformasız dolaşmak yasaktır (HQ ve üstü için saç vb. hariç).</li>
+                        <li>17. Kişisel veri paylaşımı (Doxing) DİREKT BAN SEBEBİDİR!</li>
+                        <li>18. Oyun içerisinde Gramer zorunludur.</li>
+                        <li>19. Din, Dil, Irk ayrımı yapmak kesinlikle yasaktır!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="page" id="p3">
+                <div class="card">
+                    <div class="title">LİNKLERİMİZ</div>
+                    <p>Oyun: <a href="https://www.roblox.com/tr/games/refer?PlaceId=17385083990" target="_blank" style="color:#900">Roblox Giriş</a></p>
+                    <p>Grup: <a href="https://www.roblox.com/tr/communities/32725552/TCL-Turkish-Training-Army" target="_blank" style="color:#900">Roblox Grubu</a></p>
+                    <p>Discord: <a href="https://discord.gg/sZWTzJhd" target="_blank" style="color:#900">Resmi Sunucu</a></p>
+                </div>
+            </div>
+
+            <div class="page" id="p4">
+                <div class="card">
+                    <div class="title">MARKET</div>
+                    <p>Rütbe ve ekipman alımları için:</p>
+                    <a href="https://discord.gg/TQCSMB6x" target="_blank" style="color:#00e5ff;">https://discord.gg/TQCSMB6x</a>
+                </div>
+            </div>
+
+            <div class="page" id="p5">
+                <div class="card">
+                    <div class="title">KOMUTA KADROSU</div>
+                    <p>Waset, Tufan, Revux, Bay_Can, Sonulkucu, 37xGok, Crax, Taha_</p>
+                </div>
+            </div>
+
+            <div class="page" id="p6">
+                <div class="card" style="border-left-color: #ff0000;">
+                    <div class="title" style="color:#ff0000;">KARA LİSTE (GENEL)</div>
+                    <table>
+                        <thead>
+                            <tr><th>KULLANICI</th><th>SEBEP</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>KAOSJoker1903</td><td>Başarısız abuse girişimi</td></tr>
+                            <tr><td>kaaniste312341</td><td>TTA Hakaret küfür</td></tr>
+                            <tr><td>Pro_baba31111</td><td>Abuse Girişimi</td></tr>
+                            <tr><td>Maxstudios11</td><td>İnzibat tarama, ağır hakaret</td></tr>
+                            <tr><td>OP_LIFTMINECRAFT</td><td>Troll, RDM, abuse girişimi</td></tr>
+                            <tr><td>ulasumeyr219t5</td><td>Katıksız disiplinsizlik</td></tr>
+                            <tr><td>cinarbicer3535</td><td>Ego ve güç zehirlenmesi</td></tr>
+                            <tr><td>Ozgunbeyy</td><td>Eski DC abuse, faşizm sempatizanlığı</td></tr>
+                            <tr><td>Malikbaba269</td><td>Abuse Girişimi, Troll, saygısızlık</td></tr>
+                            <tr><td>charLy_MoNn</td><td>Fake SS</td></tr>
+                            <tr><td>teomans1</td><td>Ozgun (Kendini hacker sanmak)</td></tr>
+                            <tr><td>efedenizdeneme118956</td><td>Discord Reklam</td></tr>
+                            <tr><td>0xqKayraq</td><td>Troll, Rütbe-Abuse</td></tr>
+                            <tr><td>koyzerlovezupram</td><td>DDos girişimi, Abuse, Peltek</td></tr>
+                            <tr><td>shmagew</td><td>Yetkiliye küfür, Saygısızlık</td></tr>
+                            <tr><td>ben_bilge01</td><td>Abuse girişimi, Yönetimi Kandırma</td></tr>
+                            <tr><td>Arrow99900099</td><td>Troll, abuse denemesi, dine küfür</td></tr>
+                            <tr><td>saabebele</td><td>-13, troll ve abuse planlamak</td></tr>
+                            <tr><td>acarx07.</td><td>ADK, yetkilileri meşgul etme</td></tr>
+                            <tr><td>fromthefuture97</td><td>Yan hesap, örgüt ve hakaret</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div id="rank-tag"></div>
+        </div>
+    </div>
+
+    <script>
+        function start() {
+            let val = document.getElementById('rInput').value;
+            if(!val) return;
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-app').style.display = 'flex';
+            document.getElementById('rank-tag').innerText = "RÜTBE: " + val.toUpperCase();
+        }
+        function tab(idx) {
+            let pages = document.querySelectorAll('.page');
+            let btns = document.querySelectorAll('.nav-btn');
+            pages.forEach((p, i) => p.classList.toggle('active', i === idx));
+            btns.forEach((b, i) => b.classList.toggle('active', i === idx));
+        }
+        setInterval(() => {
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString();
+        }, 1000);
+    </script>
+</body>
+</html>
